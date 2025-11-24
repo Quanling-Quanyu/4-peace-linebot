@@ -136,19 +136,14 @@ function createCardFlexMessage(card) {
       type: 'box',
       layout: 'vertical',
       contents: [
-        {
-          type: 'box',
-          layout: 'horizontal',
-          contents: card.keywords.map(keyword => ({
-            type: 'text',
-            text: '#' + keyword,
-            size: 'xs',
-            color: '#999999',
-            flex: 0,
-            margin: 'sm'
-          }))
-        }
-        
+...card.keywords.map(keyword => ({
+        type: 'text',
+        text: '#' + keyword,
+        size: 'xs',
+        color: '#999999',
+        flex: 0,
+        margin: 'sm'
+      }))        
               ],
       paddingAll: 'md'
     }
