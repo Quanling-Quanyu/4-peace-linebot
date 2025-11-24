@@ -71,3 +71,73 @@
 **總計時間**: 1.5 小時  
 **工作狀態**: 順利  
 **進度**: 如期
+
+
+---
+
+### 時間：17:00 - 18:00 CST
+
+### 工作內容：
+
+#### 5. LIFF (LINE Front-end Framework) 設置與整合
+
+- ✅ 創建 LINE Login Channel「4-Peace LIFF」
+  - Channel ID: 2008559428
+  - 類型: LINE Login（支援 LIFF）
+  - 國家: Taiwan
+  - 用途: LIFF web app 展示卡片畫廊
+
+- ✅ 創建 LIFF App「4-Peace Card Gallery」
+  - LIFF ID: 2008559428-5jbG8160
+  - LIFF URL: https://liff.line.me/2008559428-5jbG8160
+  - Size: Full（全屏顯示）
+  - Endpoint URL: https://4peace-linebot-ddgabyhj1cqhsh5aj.southeastasia-01.azurewebsites.net/public/cards.html
+  - Scope: profile
+
+- ✅ 更新 cards.html 檔案
+  - 替換 YOUR_LIFF_ID 為實際 LIFF ID: 2008559428-5jbG8160
+  - LIFF SDK 初始化設置完成
+  - 提交訊息: "Update LIFF ID in cards.html - 更新 LIFF ID"
+
+- ✅ 更新 flexMessageService.js 檔案
+  - 在卡片 footer 加入 LIFF 按鈕
+  - 按鈕文字: "🌐 查看全部禪卡"
+  - 按鈕動作: 開啟 LIFF URL
+  - 按鈕樣式: primary（使用卡片顏色）
+  - 提交訊息: "Add LIFF button to card Flex Message - 在卡片消息加入LIFF按钮"
+
+- ✅ GitHub Actions 自動部署
+  - 兩次提交均成功觸發自動部署
+  - 部署到 Azure Web App 成功
+  - 部署時間: 約 1m 39s
+
+### 完成項目統計：
+
+- LINE Official Account 設定: 100%
+- API 基礎設定: 100%
+- GitHub 專案初始化: 100%
+- LIFF 整合: 100%
+- 基礎功能開發: 60%（卡片展示完成，日記和統計功能待開發）
+
+### 下一步工作：
+
+1. ✅ 測試 LIFF 功能（等待用戶測試）
+2. 實作每日日記功能
+3. 實作月度統計功能
+4. 整合所有功能
+5. 完整測試與優化
+
+### 問題與解決：
+
+無
+
+### 備註：
+
+- LIFF 功能已完全整合到 LINE Bot
+- 用戶現在可以通過卡片底部按鈕查看完整的 8 張禪卡畫廊
+- 所有代碼已提交到 GitHub 並自動部署
+- 重要資訊（Channel ID、LIFF ID 等）需記錄到雲端文件
+
+---
+
+**總計時間**: 2.5 小時
