@@ -147,8 +147,8 @@ function createCardFlexMessage(card) {
             flex: 0,
             margin: 'sm'
           }))
-        }
-      ],
+        },
+      
         {          type: 'button',
           action: {
             type: 'uri',
@@ -159,6 +159,7 @@ function createCardFlexMessage(card) {
           color: card.colorCode,
           margin: 'md'
         }
+              ],
       paddingAll: 'md'
     }
   };
