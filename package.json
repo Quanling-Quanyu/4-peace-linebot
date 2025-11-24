@@ -1,0 +1,31 @@
+{
+  "name": "4-peace-linebot",
+  "version": "1.0.0",
+  "description": "LINE Bot for 4-Peace - 禪卡抽牌機器人 (8張脈輪卡 + 每日日記 + 月度統計)",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "line-bot",
+    "chakra",
+    "tarot",
+    "4-peace"
+  ],
+  "author": "Quanling-Quanyu",
+  "license": "ISC",
+  "dependencies": {
+    "@line/bot-sdk": "^9.3.0",
+    "express": "^4.21.1",
+    "dotenv": "^16.4.7",
+    "@azure/data-tables": "^13.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
