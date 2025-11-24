@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4-Peace 禪卡 - 八色脈輪卡</title>
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 10px;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+        .card-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            background: linear-gradient(45deg, #f3f3f3, #e8e8e8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+        }
+        .card-content {
+            padding: 20px;
+        }
+        .card-name {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-english {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        .card-quotes {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+        .card-meaning {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        .card-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .keyword {
+            background: #f0f0f0;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #666;
+        }
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            padding: 40px;
+        }
+        @media (max-width: 768px) {
+            .card-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+            }
+            .card-image {
+                height: 220px;
+                font-size: 60px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ 4-Peace 禪卡 ✨</h1>
+        <p class="subtitle">八色脈輪卡 - 探索內在的平靜與智慧</p>
+        <div id="loading" class="loading">載入中...</div>
+        <div id="cardGrid" class="card-grid" style="display: none;"></div>
+    </div>
+
+    <script>
+        // 卡片資料
+        const CHAKRA_CARDS = [
+            {
+                id: 1,
+                name: '海底輪',
+                english: 'Root Chakra',
+                color: '紅色 - 蘋果紅',
+                colorCode: '#E8382F',
+                emoji: '❤️',
+                quotes: '做就對了',
+                meaning: '生存、安全感、物質基礎',
+                keywords: ['根基', '穩定', '生命力', '地球連結'],
+                message: '需要建立穩固的基礎，讓自己感到安全和穩定'
+            },
+            {
+                id: 2,
+                name: '臍輪',
+                english: 'Sacral Chakra',
+                color: '橙色 - 活力橙',
+                colorCode: '#FF8C00',
+                emoji: '🧡',
+                quotes: '耐性等待',
+                meaning: '情感、創造力、性能量',
+                keywords: ['創意', '情緒', '享樂', '人際關係'],
+                message: '需要培養耐心，等待適當的時機展現創造力'
+            },
+            {
+                id: 3,
+                name: '太陽輪',
+                english: 'Solar Plexus Chakra',
+                color: '黃色 - 陽光黃',
+                colorCode: '#FFD700',
+                emoji: '💛',
+                quotes: '穩定前行',
+                meaning: '自信、意志力、個人力量',
+                keywords: ['意志', '力量', '自尊', '決斷'],
+                message: '需要保持穩定的步伐，堅定地向前邁進'
+            },
+            {
+                id: 4,
+                name: '心輪',
+                english: 'Heart Chakra',
+                color: '綠色 - 森林綠',
+                colorCode: '#228B22',
+                emoji: '💚',
+                quotes: '愛與平衡',
+                meaning: '愛、同理心、接納',
+                keywords: ['愛', '和諧', '寬恕', '同情'],
+                message: '需要用愛與平衡的心態對待自己和他人'
+            },
+            {
+                id: 5,
+                name: '喉輪',
+                english: 'Throat Chakra',
+                color: '粉紅色 - 櫻花粉',
+                colorCode: '#FFB6C1',
+                emoji: '🩷',
+                quotes: '真誠表達',
+                meaning: '溝通、表達、真實',
+                keywords: ['溝通', '表達', '誠實', '創意'],
+                message: '需要真誠地表達自己的想法和感受'
+            },
+            {
+                id: 6,
+                name: '眉心輪',
+                english: 'Third Eye Chakra',
+                color: '藍色 - 天空藍',
+                colorCode: '#1E90FF',
+                emoji: '💙',
+                quotes: '直覺洞察',
+                meaning: '直覺、洞察力、智慧',
+                keywords: ['直覺', '洞察', '智慧', '想像'],
+                message: '需要相信自己的直覺和內在智慧'
+            },
+            {
+                id: 7,
+                name: '頂輪',
+                english: 'Crown Chakra',
+                color: '紫色 - 高貴紫',
+                colorCode: '#9370DB',
+                emoji: '💜',
+                quotes: '靈性連結',
+                meaning: '靈性、覺知、合一',
+                keywords: ['靈性', '覺知', '啟發', '超越'],
+                message: '需要連結更高的靈性意識和宇宙能量'
+            },
+            {
+                id: 8,
+                name: '靈性輪',
+                english: 'Soul Star Chakra',
+                color: '白色 - 純淨白',
+                colorCode: '#FFFFFF',
+                emoji: '🤍',
+                quotes: '純淨合一',
+                meaning: '超越、神聖連結、靈魂使命',
+                keywords: ['純淨', '神性', '使命', '合一'],
+                message: '需要與最高的神聖能量連結，實現靈魂使命'
+            }
+        ];
+
+        // 初始化 LIFF
+        async function initializeLIFF() {
+            try {
+                await liff.init({ liffId: 'YOUR_LIFF_ID' }); // 稍後會更新
+                console.log('LIFF initialized');
+                loadCards();
+            } catch (error) {
+                console.error('LIFF initialization failed:', error);
+                loadCards(); // 即使 LIFF 初始化失敗，也顯示卡片
+            }
+        }
+
+        // 載入卡片
+        function loadCards() {
+            const loading = document.getElementById('loading');
+            const cardGrid = document.getElementById('cardGrid');
+            
+            loading.style.display = 'none';
+            cardGrid.style.display = 'grid';
+            
+            CHAKRA_CARDS.forEach(card => {
+                const cardElement = createCardElement(card);
+                cardGrid.appendChild(cardElement);
+            });
+        }
+
+        // 建立卡片元素
+        function createCardElement(card) {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'card';
+            cardDiv.style.borderTop = `4px solid ${card.colorCode}`;
+            
+            cardDiv.innerHTML = `
+                <div class="card-image">${card.emoji}</div>
+                <div class="card-content">
+                    <div class="card-name">
+                        ${card.emoji} ${card.name}
+                    </div>
+                    <div class="card-english">${card.english}</div>
+                    <div class="card-quotes">「${card.quotes}」</div>
+                    <div class="card-meaning">${card.meaning}</div>
+                    <div class="card-keywords">
+                        ${card.keywords.map(k => `<span class="keyword">${k}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+            
+            return cardDiv;
+        }
+
+        // 啟動應用
+        if (typeof liff !== 'undefined') {
+            initializeLIFF();
+        } else {
+            loadCards();
+        }
+    </script>
+</body>
+</html>
