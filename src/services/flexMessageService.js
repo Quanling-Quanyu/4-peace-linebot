@@ -149,6 +149,16 @@ function createCardFlexMessage(card) {
           }))
         }
       ],
+        {          type: 'button',
+          action: {
+            type: 'uri',
+            label: '🌐 查看全部禅卡',
+            uri: 'https://liff.line.me/2008559428-5jbG8160'
+          },
+          style: 'primary',
+          color: card.colorCode,
+          margin: 'md'
+        }
       paddingAll: 'md'
     }
   };
