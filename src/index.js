@@ -6,12 +6,13 @@
 // 載入環境變數
 require('dotenv').config();
 
-// 載入必要模組
+// 載入必要套件
 const express = require('express');
 const line = require('@line/bot-sdk');
 
 // 載入服務模組
-const { drawRandomCard, formatCardMessage, getAllCards } = require('./services/cardService');
+const { drawRandomCard, getAllCards } = require('./services/cardService');
+const { createCardFlexMessage, createCarouselFlexMessage } = require('./services/flexMessageService');
 
 // LINE Bot 設定
 const config = {
@@ -28,7 +29,7 @@ const app = express();
 // 設定 PORT
 const PORT = process.env.PORT || 3000;
 
-// Webhook 路由
+// Webhook 路徑
 app.post('/webhook', line.middleware(config), async (req, res) => {
   try {
     // 處理所有接收到的事件
@@ -51,34 +52,36 @@ async function handleEvent(event) {
   const userMessage = event.message.text.trim();
   let replyMessage;
 
-  // 根據使用者輸入處理不同功能
-  if (userMessage === '抽牌' || userMessage === '「抽牌」') {
-    // 隨機抽一張脈輪卡片
+  // 根據使用者輸入來處理不同功能
+  if (userMessage === '抽牌' || userMessage === '「抽牌。') {
+    // 隨機抽一張禪卡卡片
     const card = drawRandomCard();
-    const cardText = formatCardMessage(card);
+    const flexMessage = createCardFlexMessage(card);
     replyMessage = {
-      type: 'text',
-      text: `🎴 今天的脈輪卡片：\n\n${cardText}`
+      type: 'flex',
+      altText: `今天抽到的卡片：${card.name} ${card.emoji}`,
+      contents: flexMessage
     };
-  } else if (userMessage === '全部卡片' || userMessage.includes('看看') || userMessage.includes('卡片')) {
-    // 顯示所有卡片清單
+  } else if (userMessage === '全部卡片' || userMessage.includes('看卡') || userMessage.includes('卡片')) {
+    // 顯示所有卡片成盤
     const allCards = getAllCards();
-    const cardList = allCards.map(card => `${card.emoji} ${card.name} (${card.color})`).join('\n');
+    const carouselMessage = createCarouselFlexMessage(allCards);
     replyMessage = {
-      type: 'text',
-      text: `🎴 8張脈輪卡片：\n\n${cardList}\n\n輸入「抽牌」來隨機抽一張吧！`
+      type: 'flex',
+      altText: '8張脈輪卡片：' + allCards.map(card => `${card.emoji} ${card.name}`).join(' '),
+      contents: carouselMessage
     };
   } else if (userMessage === '幫助' || userMessage === '功能' || userMessage === '?') {
     // 顯示幫助訊息
     replyMessage = {
       type: 'text',
-      text: `👋 歡迎使用 4-Peace 脈輪抽牌機器人！\n\n🎯 可用命令：\n• 「抽牌」 - 隨機抽取今天的脈輪卡片\n• 「全部卡片」 - 查看所有8張卡片\n• 「幫助」 - 顯示此幫助訊息\n\n✨ 還有更多功能正在開發中！`
+      text: '💜 歡迎使用 4-Peace 禪卡抽牌機器人！\n\n可以命令：\n✨ 「抽牌」- 隨機抽一張禪卡\n🎴 「全部卡片」- 查看所有 8 張禪卡\n❓ 「幫助」- 顯示這個訊息'
     };
   } else {
     // 預設回應
     replyMessage = {
       type: 'text',
-      text: `你好！我是 4-Peace 脈輪抽牌機器人💚\n\n輸入「幫助」查看可用功能，或者直接輸入「抽牌」開始！`
+      text: `你好！歡迎使用 4-Peace 禪卡抽牌機器人💚\n\n輸入「抽牌」查看今天的禪卡，或輸入「幫助」查看更多功能！`
     };
   }
 
@@ -86,36 +89,22 @@ async function handleEvent(event) {
   return client.replyMessage(event.replyToken, replyMessage);
 }
 
-// 健康檢查路由
+// 健康檢查路徑
 app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'ok',
-    message: 'LINE Bot is running!',
-    timestamp: new Date().toISOString()
+    message: '4-Peace LINE Bot is running!'
   });
 });
 
-// 根路徑
+// 首頁路徑
 app.get('/', (req, res) => {
-  res.status(200).send(`
-    <html>
-      <head><title>4-Peace LINE Bot</title></head>
-      <body style="font-family: Arial; text-align: center; padding: 50px;">
-        <h1>🎴 4-Peace 脈輪抽牌機器人</h1>
-        <p>服務正在運行中...</p>
-        <p><a href="/health">Health Check</a></p>
-      </body>
-    </html>
-  `);
+  res.send('💜 4-Peace LINE Bot 禪卡抽牌機器人正在運行中...');
 });
 
 // 啟動伺服器
 app.listen(PORT, () => {
-  console.log(`\n🚀 ========================================`);
-  console.log(`🎴 4-Peace LINE Bot 已啟動！`);
-  console.log(`🚀 ========================================`);
-  console.log(`📍 Port: ${PORT}`);
-  console.log(`📝 Webhook URL: http://localhost:${PORT}/webhook`);
-  console.log(`💚 Health Check: http://localhost:${PORT}/health`);
-  console.log(`🚀 ========================================\n`);
+  console.log(`🚀 4-Peace LINE Bot started on port ${PORT}`);
+  console.log(`🎯 Webhook URL: https://your-domain.com/webhook`);
+  console.log(`✅ Ready to receive messages!`);
 });
