@@ -153,7 +153,7 @@ function createCardFlexMessage(card) {
           action: {
             type: 'uri',
             label: '🌐 查看全部禅卡',
-            uri: 'https://liff.line.me/2008559428-5jbG8160'
+            uri: 'https://liff.line.me/2008559428-5JbG8160'
           },
           style: 'primary',
           color: card.colorCode,
