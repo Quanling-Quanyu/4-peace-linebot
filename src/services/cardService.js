@@ -31,7 +31,7 @@ const CHAKRA_CARDS = [
   },
   {
     id: 3,
-    name: '太陽神經輮',
+    name: '太陽輪',
     english: 'Solar Plexus Chakra',
     color: '黃色－黃金桂花',
     colorCode: '#FFB71B',
